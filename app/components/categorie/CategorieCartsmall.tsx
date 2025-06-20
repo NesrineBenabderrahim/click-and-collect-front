@@ -10,11 +10,11 @@ import useCard from "@/app/hooks/useCard";
     interface CategorieCartProps{
         data:any
         isTitle?:boolean
-        
+        setShowTop:Function
     }
-    const CategorieCart:React.FC <CategorieCartProps> = ({data,isTitle}) => {
+    const CategorieCartsmall:React.FC <CategorieCartProps> = ({data,isTitle,setShowTop}) => {
         const {ModeRetrait}=useCard()
-        const [isOpen,setIsOpen]=useState(true)
+        const [isOpen,setIsOpen]=useState(false)
         const handleOpenModal =()=>{
             setIsOpen(true)
         }
@@ -24,14 +24,6 @@ import useCard from "@/app/hooks/useCard";
     
         const router = useRouter()
 
-        const handle=()=>{
-            
-            if (ModeRetrait === null || Object.keys(ModeRetrait).length === 0 ){
-                handleOpenModal()
-            }else{
-                router.push(`/menu/${data.id}`)} 
-
-        }
     
         return ( 
         <div>
@@ -41,24 +33,21 @@ import useCard from "@/app/hooks/useCard";
             </div>
         :<>
 
-            <div className=" ">
-                <div  className="flex  gap-2 justify-center items-center  text-[15px] cursor-pointer hover:scale-105">
-                    <div onClick={handle } >
-                        <div className="col-span-1 text-center font-semibold">{data.title} </div>
-                        <div className="aspect-square overflow-hidden relative  rounded-md h-[150px] w-[150px]">
+                    <div onClick={()=>{setShowTop(false)
+                            router.push(`/menu/${data.id}#about-section`)}}
+                            className="flex p-2 text-[15px] justify-center items-center cursor-pointer hover:scale-105" >
+                        <div className="relative rounded-full h-[80px] w-[100px]">
                             <Image
-                                fill
+                                fill  
                                 src={data.imageUrl}
                                 alt=""
+                                sizes="(max-width: 80px) 30vw, 80px"
                                 
                             />
                         </div>
+                        <div className=" font-semibold  px-2 ">{data.title} </div>
                     </div>
-                    
-                    <ModeRetraitModal Open={isOpen} onClose={handleModalClose} data={data} />
-                </div>
-            </div>
-            
+                                
 
         </>}
         
@@ -67,4 +56,4 @@ import useCard from "@/app/hooks/useCard";
         );
     }
     
-    export default CategorieCart;
+    export default CategorieCartsmall;

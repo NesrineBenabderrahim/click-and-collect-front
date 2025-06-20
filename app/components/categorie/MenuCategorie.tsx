@@ -1,29 +1,38 @@
 "use client"
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 
-import { card } from "@/app/utils/products";
-import { DropdownApp } from "../product/dropDown";
+import { DropdownApp } from "../form/dropDown";
 import CategorieCart from "./CategorieCart";
+import useCard from "@/app/hooks/useCard";
 
 
 interface MenuCategorieProps{
-    data?:any,
+    data?:any
 }
 
 
 const MenuCategorie:React.FC<MenuCategorieProps>= ({data}) => {
     const [n,setN] = useState(4)
-    const router = useRouter()
-    const selectedProduct = localStorage.getItem("selectedProductId")!==null?JSON.parse(localStorage.getItem("selectedProductId")??'{}'):{}
-
+    
+    const {selectedShoplist,card,getDataCard} = useCard()  
+    
+// useEffect(()=>{
+//     if(card === "undefined"){
+//         getDataCard()
+//     console.log({card});
+//     }
+    
+// },[])
 
     let listCategorie:any[]
     let ListDrop:any[]
+    // console.log({card});
 
-    listCategorie =Object.values(card.categories).slice(1, n)
-    ListDrop= Object.values(card.categories).filter((item:any)=>listCategorie.findIndex((el:any)=>el.title===item.title)===-1 )
+    listCategorie =card?.categories?.slice(0 , n)
+    ListDrop= card?.categories?.filter((item:any)=>listCategorie.findIndex((el:any)=>el.title===item.title)===-1 )
+    
+
 
     useEffect(() => {
         
@@ -31,7 +40,7 @@ const MenuCategorie:React.FC<MenuCategorieProps>= ({data}) => {
             if (window.innerWidth < 760) {
                 setN(4)
             } else {
-                setN(Object.values(card.categories).length)
+                setN(card?.categories?.length)
                 
             }
         };
@@ -45,9 +54,9 @@ const MenuCategorie:React.FC<MenuCategorieProps>= ({data}) => {
 
     return (  
     <div className="flex justify-center justify-between shadow-md shadow-rounded-lg shadow-black gap-2  w-full justify-content p-4 ">
-    <p className="text-xl cursor-pointer " onClick={() => router.push(`/product/${selectedProduct.Id}`)} >Menu</p>
+    <p className="text-xl cursor-pointer " onClick={() => window.location.href = `/product/${selectedShoplist[0].id}`} >Menu</p>
     <div className="flex justify-center gap-2">
-    {listCategorie.map((item)=><div  key={item.id} className=""><CategorieCart  data={item} isTitle={true}  /></div>)}
+    {listCategorie && listCategorie.map((item)=><div  key={item.id} className="" ><CategorieCart  data={item} isTitle={true}  /></div>)}
     </div>
     <DropdownApp items={ListDrop} title=" Voir plus ..."/>
     </div> );
