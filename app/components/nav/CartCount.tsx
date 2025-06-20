@@ -2,12 +2,17 @@
 import useCard from "@/app/hooks/useCard";
 import { useRouter } from "next/navigation";
 import { CiShoppingCart } from "react-icons/ci";
+import { useSnapshot } from "valtio";
+import { setIsValidation ,store} from "@/app/hooks/store";
 
 const CartCount = () => {
+
+    const {isValidation}=useSnapshot(store)
     const  {cartTotalQty} =useCard()
+    
     const router =useRouter()
     return ( 
-    <div className="absolute cursor-pointer" onClick={()=>router.push('/cart')}>
+    <div className="absolute cursor-pointer" onClick={()=>setIsValidation(true)} >
         <div className="text-3xl">
             <CiShoppingCart />
         </div>
