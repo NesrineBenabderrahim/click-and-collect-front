@@ -1,4 +1,4 @@
-    import React from 'react';
+    import React, { useEffect } from 'react';
     import styled from '@emotion/styled';
     import useCard from '@/app/hooks/useCard';
     import { FaSquareMinus, FaSquarePlus } from "react-icons/fa6";
@@ -29,19 +29,23 @@
         onChange(updatedValue);
     };
 
-    const {HandleCartQtyIncrease,HandleCartQtyDecrease}=useCard()
+    const {HandleCartQtyIncrease,HandleCartQtyDecrease,getData,dataUser}=useCard()
+    useEffect(()=>{
+        getData(); 
+
+    },[])
     
     return (
         <>
         <ButtonContainer>
-            <FaSquareMinus  onClick={data===undefined?   handleDecreaseClick  :()=>{HandleCartQtyDecrease(data)}} className='mt-2' size={25}/>
+            <FaSquareMinus  onClick={data===undefined?   handleDecreaseClick  :()=>{HandleCartQtyDecrease(data,dataUser)}} className='mt-2' size={25}/>
             <input
             type='number'
             style={{ width: '40px', textAlign: 'center' }}
             value={value}
             readOnly
             />
-            <FaSquarePlus onClick={data===undefined? handleIncreaseClick :()=>{HandleCartQtyIncrease(data)}} className='mt-2'  size={25} />
+            <FaSquarePlus onClick={data===undefined? handleIncreaseClick :()=>{HandleCartQtyIncrease(data,dataUser)}} className='mt-2'  size={25} />
         </ButtonContainer>
         </>
     )

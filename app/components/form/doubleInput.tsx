@@ -1,16 +1,33 @@
-import React from 'react';
-import { SettingOutlined } from '@ant-design/icons';
-import { Cascader, Input, Select, Space } from 'antd';
-
-const { Option } = Select;
+"use client";
+import { Input, Space } from "antd";
+import { FieldErrors, FieldValues, UseFormRegister } from "react-hook-form";
 
 interface DoubleInputAppProps {
-    data:any
-} 
-const DoubleInputApp: React.FC<DoubleInputAppProps>= ({data}) => (
+id: string;
+data?: any;
+required?: boolean;
+register: UseFormRegister<FieldValues>;
+errors: FieldErrors;
+}
+const DoubleInputApp: React.FC<DoubleInputAppProps> = ({
+data,
+required,
+id,
+register,
+errors,
+}) => {
+return (
     <Space direction="vertical">
-        <Input addonBefore={data.PostalCode} defaultValue={data.Address}  className='justify-content'/>
+    <Input
+        id={id}
+        addonBefore={data.PostalCode}
+        defaultValue={data.Address}
+        {...register(id, { required })}
+        
+        className={`justify-content  ${errors[id]? 'focus:border-rose-400':'border-slate-300'}`}
+    />
     </Space>
 );
+};
 
 export default DoubleInputApp;

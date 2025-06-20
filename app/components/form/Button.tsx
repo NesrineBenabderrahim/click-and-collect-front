@@ -7,6 +7,7 @@ interface ButtonProps{
     disabled?:boolean,
     outline?:boolean,
     small?:boolean,
+    ModalInfo?:boolean,
     custom?:string,
     type?:string,
     href?:string,
@@ -20,6 +21,7 @@ const Button :React.FC<ButtonProps> = (
     outline,
     href,
     small,
+    ModalInfo,
     custom,
 
     onClick}) => {
@@ -29,9 +31,9 @@ const Button :React.FC<ButtonProps> = (
         disabled={disabled} 
         className={`disabled:opacity-70   disabled:cursor-not-allowed rounded-md hover:opacity-80 transition w-full border-gray-700 flex item-center justify-center gap-2
             ${outline? "bg-white":"bg-gray-700"}
-            ${outline? "text-slate-200": "text-white"} 
+            ${outline? "text-slate-700": "text-white"} 
             ${small? "text-sm font-light":"text-md font-semibold"}
-            ${small? "py-1 px-2 border-[1px]":"py-3 px-4 border-2"}
+            ${small? "flex py-1 px-2 border-[1px] justify-content ":"py-3 px-4 border-2"}
             ${custom? custom :''}
             `}>
         
