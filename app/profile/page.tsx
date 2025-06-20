@@ -155,7 +155,7 @@ return (
                     className="text-slate-500 cursor-pointer flex items-center gap-1 mt-2"
                     >
                     <MdArrowBack />
-                    <span>Start Ordering</span>
+                    <span>Commander</span>
                     </div>
                 </div>
                 )}
