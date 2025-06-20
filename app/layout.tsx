@@ -5,10 +5,11 @@ import { Inter } from "next/font/google";
 import { UserLocationProvider } from "./hooks/useLocation";
 import { CardProvider } from "./hooks/useCard";
 import NavBar from "./components/nav/NavBar";
-import Footer from "./components/footer/Footer";
 
 
 import "./globals.css";
+import Navbar from "./components/nav/Navbar1";
+import Footer from "./components/footer/Foote";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,9 +29,10 @@ export default function RootLayout({
       <UserLocationProvider>
         <CardProvider>
         <div className="flex flex-col min-h-screen">
-          <NavBar isClick={false}/>
+          <Navbar />
+          {/* <NavBar isClick={false}/> */}
           <main className="flex-grow">{children}</main>
-          <Footer/>
+          <Footer /> 
       </div>
       </CardProvider>
       </UserLocationProvider>
