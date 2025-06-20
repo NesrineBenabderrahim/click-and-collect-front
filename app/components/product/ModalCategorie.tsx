@@ -6,8 +6,8 @@ import { IoMdClose } from "react-icons/io"
 import { TbTruckDelivery } from "react-icons/tb"
 import { generateTimeSlots } from "./generateTimeSlots"
 import Button from "../form/Button"
-import TimePicker from "./TimePicker"
-import TimePickerApp from "./TimePicker"
+import TimePicker from "../form/TimePicker"
+import TimePickerApp from "../form/TimePicker"
 
 interface ModalProps{
     isVisible:boolean,
