@@ -1,6 +1,5 @@
-"use client"
+"use client";
 import { createContext, useContext, useEffect, useState } from "react";
-import toast from "react-hot-toast";
 
 type Location ={
     userLocation:{ lat: number, lng: number },
@@ -47,9 +46,9 @@ export const UserLocationProvider =(props:any)=>{
                     askForLocationPermission();
                 } else if (result.state === "denied") {
                     // Permission denied, handle accordingly
-                    toast.error("Location access denied by the user.", {
-                    duration: 1000,
-                    });
+                    // toast.error("Location access denied by the user.", {
+                    // duration: 1000,
+                    // });
                 }
                 })
                 .catch((error) => {
@@ -58,9 +57,9 @@ export const UserLocationProvider =(props:any)=>{
                 });
             } else {
             // Geolocation is not supported
-            toast.error("Geolocation is not supported by this browser.", {
-                duration: 1000,
-            });
+            // toast.error("Geolocation is not supported by this browser.", {
+            //     duration: 1000,
+            // });
             }
     },[])
     // useEffect(() => {
