@@ -61,11 +61,11 @@ const sortedCommandeExpédié = [...commandeExpédié].sort((a, b) => b.id - a.i
     if (!dataCommande || dataCommande.length === 0) {
         return (
             <div className="flex flex-col items-center">
-                <div className="text-2xl">Your cart is empty</div>
+                <div className="text-2xl">Pas des commandes</div>
                 <div>
                     <div className="text-slate-500 flex items-center gap-1 mt-2">
                         <MdArrowBack />
-                        <span>Start Ordering</span>
+                        <span>Poursuivre votre commande</span>
                     </div>
                 </div>
             </div>

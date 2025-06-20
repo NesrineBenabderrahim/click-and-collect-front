@@ -56,14 +56,14 @@ if (!cartProducts || cartProducts.length === 0) {
 
 return (
     <div className="flex flex-col items-center">
-    <div className="text-2xl">Your cart is empty</div>
+    <div className="text-2xl">Pas des commande</div>
     <div>
         <Link
         href={`/menu/1`}
         className="text-slate-500 flex items-center gap-1 mt-2"
         >
         <MdArrowBack />
-        <span>Start Ordering</span>
+        <span>Poursuivre votre commande</span>
         </Link>
     </div>
     </div>
