@@ -1,6 +1,8 @@
+'use client';
 import useCard from '@/app/hooks/useCard';
 import React from 'react';
 import Chart, {Props} from 'react-apexcharts';
+
 
 interface StatData {
    nbrFois: number;
@@ -13,7 +15,7 @@ interface StatData {
 
 
 
-export const Steam = () => {
+const Steam = () => {
 
    const {stat}= useCard()
    // console.log({stat});
@@ -121,3 +123,4 @@ sorted7Stat.forEach((el:any,index:number)=>{
       </>
    );
 };
+export default Steam;

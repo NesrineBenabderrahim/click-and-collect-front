@@ -1,4 +1,7 @@
-"use client"
+'use client'
+import dynamic from 'next/dynamic';
+
+const Steam = dynamic(() => import('./charts/steam'), { ssr: false });
 import { useEffect, useState } from "react";
 import useCard from "../hooks/useCard";
 import { DropdownAppProfile } from "../components/form/dropDownProfile";
@@ -7,7 +10,6 @@ import FormAddPlat from "./formAddPlat";
 import FormAddCategorie from "./formAddCategorie";
 import Container from "../components/Container";
 import Search from "../components/form/searchBar";
-import { Steam } from "./charts/steam";
 import SalesTable from "./table";
 import Pie from "./charts/Pie";
 import Drawer from "./Drawer";
