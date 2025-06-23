@@ -178,7 +178,7 @@ console.log({ updatedFormData });
                 id="selectedShop"
                 multiple
                 value={selectedShop}
-                {...registerSignup("selectedShop", { required: true })}
+               // {...registerSignup("selectedShop", { required: true })}
                 onChange={handleChange}
                 input={<OutlinedInput id="select-multiple-chip" label="Shop Parent" />}
                 renderValue={(selected) => (
