@@ -26,70 +26,60 @@ const FormAddCategorie: React.FC<FormAddCategorieProps> = ({ update, Data, onClo
         title: "",
         imageUrl: "",
         idCard: 1,
-        shopParent: [] // Initialize as an array for multi-select
+        shopParent: []
     });
-    const[selectedShop,setSelectedShop]=useState([])
-
-
-    let listshoplist: any = card?.shoplist.map((el: any) => el.Company);
-    //console.log({ listshoplist });
-
-    useEffect(() => {
-        if (update && Data) {
-            setItemData(Data);
-            setSelectedShop(Data.shopParent)
-        }
-    }, [update, Data]);
+    const [selectedShop, setSelectedShop] = useState<string[]>([]);
+    const theme = useTheme();
 
     const {
         register: registerSignup,
         handleSubmit: handleSubmitUpdate,
         formState: { errors: errorsSignup },
+        reset
     } = useForm<FieldValues>({
         defaultValues: itemData,
     });
 
+    useEffect(() => {
+        if (update && Data) {
+            setItemData(Data);
+            setSelectedShop(Data.shopParent || []);
+            reset(Data);
+        }
+    }, [update, Data, reset]);
+
     const onSubmitUpdate: SubmitHandler<FieldValues> = async (formData) => {
-        const Shops:string[] = selectedShop;
-// Include selectedShop in formData
         const updatedFormData = {
             ...formData,
-            shopParent: Shops,
+            shopParent: selectedShop,
         };
 
-console.log({ updatedFormData });
-//         console.log({ formData });
-        if (update) {
-            await fetch(`http://localhost:8080/api/categories/${Data.id}`, {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                credentials: "include",
-                body: JSON.stringify(updatedFormData),
-            });
+        const endpoint = update
+            ? `http://localhost:8080/api/categories/${Data.id}`
+            : `http://localhost:8080/api/categories/Addcategories`;
 
-            console.log("done Update");
-            if (onCloseModalUpdate) {
-                onCloseModalUpdate();
-            }
-        } else {
-            await fetch(`http://localhost:8080/api/categories/Addcategories`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                credentials: "include",
-                body: JSON.stringify(updatedFormData),
-            });
+        const method = update ? "PUT" : "POST";
 
-            console.log("done Add");
-        }
-        setItemData({
-            title: "",
-            imageUrl: "",
-            idCard: 1,
-            shopParent: [] // Reset to an empty array
+        await fetch(endpoint, {
+            method,
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify(updatedFormData),
         });
-        setSelectedShop([])
+
+        console.log(update ? "done Update" : "done Add");
+
+        if (update && onCloseModalUpdate) {
+            onCloseModalUpdate();
+        }
+
+        setItemData({ title: "", imageUrl: "", idCard: 1, shopParent: [] });
+        setSelectedShop([]);
         getDataCard();
+        reset({ title: "", imageUrl: "", idCard: 1, shopParent: [] });
     };
+
+    const listshoplist = card?.shoplist.map((el: any) => el.Company) || [];
 
     const ITEM_HEIGHT = 48;
     const ITEM_PADDING_TOP = 8;
@@ -102,39 +92,31 @@ console.log({ updatedFormData });
         },
     };
 
-    function getStyles(name: any, shopParent: any, theme: any) {
-        return {
-            fontWeight:
-                shopParent.indexOf(name) === -1
-                    ? theme.typography.fontWeightRegular
-                    : theme.typography.fontWeightMedium,
-        };
-    }
-
-    const theme = useTheme();
+    const getStyles = (name: any, shopParent: any, theme: any) => ({
+        fontWeight: shopParent.indexOf(name) === -1
+            ? theme.typography.fontWeightRegular
+            : theme.typography.fontWeightMedium,
+    });
 
     const handleChange = (event: any) => {
-        const {
-            target: { value },
-        } = event;
-        console.log({value})
-        setSelectedShop(value)
+        const { value } = event.target;
+        setSelectedShop(value);
     };
 
     return (
         <Container>
             <div className="flex relative">
-                <div className="border-[1.2px] border-slate-200 bg-white shadow-md rounded-2xl w-full relative ">
+                <div className="border-[1.2px] border-slate-200 bg-white shadow-md rounded-2xl w-full relative">
                     <div className="flex justify-between">
                         <div className="flex p-2 gap-1">
                             <IoIosInformationCircleOutline size={25} />
-                            {!update ? <p >Ajouter un categorie</p>: <p>Modifier un categorie</p>}
+                            <p>{update ? "Modifier un categorie" : "Ajouter un categorie"}</p>
                         </div>
                         <div className="p-2">
                             <MdSaveAs
                                 onClick={handleSubmitUpdate(onSubmitUpdate)}
                                 size={30}
-                                className="bg-white text-gray-600 rounded-md"
+                                className="bg-white text-gray-600 rounded-md cursor-pointer"
                             />
                         </div>
                     </div>
@@ -145,14 +127,11 @@ console.log({ updatedFormData });
                             register={registerSignup}
                             errors={errorsSignup}
                             type="text"
-                            placeholder=""
                             label="Title"
                             value={itemData.title}
+                            placeholder="" 
                             onChange={(e: any) =>
-                                setItemData({
-                                    ...itemData,
-                                    title: e.target.value,
-                                })
+                                setItemData({ ...itemData, title: e.target.value })
                             }
                         />
                         <InputProfile
@@ -161,49 +140,47 @@ console.log({ updatedFormData });
                             register={registerSignup}
                             errors={errorsSignup}
                             type="text"
-                            placeholder=""
                             label="Image URL"
+                            placeholder="" 
                             value={itemData.imageUrl}
                             onChange={(e: any) =>
-                                setItemData({
-                                    ...itemData,
-                                    imageUrl: e.target.value,
-                                })
+                                setItemData({ ...itemData, imageUrl: e.target.value })
                             }
                         />
-                <FormControl sx={{ m: 1, width: 250 }} error={!!errorsSignup.selectedShop}>
-            <InputLabel id="demo-multiple-chip-label">Shop Parent</InputLabel>
-            <Select
-                labelId="demo-multiple-chip-label"
-                id="selectedShop"
-                multiple
-                value={selectedShop}
-               // {...registerSignup("selectedShop", { required: true })}
-                onChange={handleChange}
-                input={<OutlinedInput id="select-multiple-chip" label="Shop Parent" />}
-                renderValue={(selected) => (
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                        {selected.map((value: any, index: any) => (
-                            <Chip key={index} label={value} />
-                        ))}
-                    </Box>
-                )}
-                MenuProps={MenuProps}
-            >
-                {listshoplist.map((name: any, index: any) => (
-                    <MenuItem
-                        key={index}
-                        value={name}
-                        style={getStyles(name, itemData.shopParent, theme)}
-                    >
-                        {name}
-                    </MenuItem>
-                ))}
-            </Select>
-            {errorsSignup.selectedShop && (
-                <p style={{ color: 'red', fontSize: "0.75rem" }}>veuillez compléter ce champ</p>
-            )}
-        </FormControl>
+                        <FormControl sx={{ m: 1, width: 250 }} error={!!errorsSignup.selectedShop}>
+                            <InputLabel id="demo-multiple-chip-label">Shop Parent</InputLabel>
+                            <Select
+                                labelId="demo-multiple-chip-label"
+                                id="selectedShop"
+                                multiple
+                                value={selectedShop}
+                                onChange={handleChange}
+                                input={<OutlinedInput id="select-multiple-chip" label="Shop Parent" />}
+                                renderValue={(selected) => (
+                                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                                        {(selected as string[]).map((value, index) => (
+                                            <Chip key={index} label={value} />
+                                        ))}
+                                    </Box>
+                                )}
+                                MenuProps={MenuProps}
+                            >
+                                {listshoplist.map((name: string, index: number) => (
+                                    <MenuItem
+                                        key={index}
+                                        value={name}
+                                        style={getStyles(name, selectedShop, theme)}
+                                    >
+                                        {name}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                            {errorsSignup.selectedShop && (
+                                <p style={{ color: 'red', fontSize: "0.75rem" }}>
+                                    veuillez compléter ce champ
+                                </p>
+                            )}
+                        </FormControl>
                     </div>
                 </div>
             </div>
